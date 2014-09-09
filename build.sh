@@ -25,11 +25,11 @@ function build_binary() {
 }
 
 build_binary darwin amd64 darwin_x86_64 urlreceiver
-#build_binary darwin 386 darwin_x86 urlreceiver
+build_binary darwin 386 darwin_x86 urlreceiver
 build_binary linux amd64 linux_x86_64 urlreceiver
-#build_binary linux 386 linux_x86 urlreceiver
-#build_binary windows amd64 windows_x86_64 urlreceiver.exe
-#build_binary windows 386 windows_x86 urlreceiver.exe
+build_binary linux 386 linux_x86 urlreceiver
+build_binary windows amd64 windows_x86_64 urlreceiver.exe
+build_binary windows 386 windows_x86 urlreceiver.exe
 
 echo "Building pacakge..." >&2
 VERSION=$(cat app/default/app.conf | grep -e 'version\s*=' | sed -e 's/version[ ]*=[ ]*//')
