@@ -21,8 +21,9 @@ If enabled use the IP address of the client sending the HTTP request as the `hos
 
 ## Build from source
 
-1. Install the [Go](http://golang.org/) toolchain and set up the Go compiler for all target platforms/architectures
-    ```
+##### 1. Install the [Go](http://golang.org/) toolchain and set up the Go compiler for all target platforms/architectures
+
+```
 cd $GOROOT/src
 GOOS=darwin GOARCH=amd64 ./make.bash --noclean
 GOOS=darwin GOARCH=386 ./make.bash --noclean
@@ -32,9 +33,11 @@ GOOS=windows GOARCH=amd64 ./make.bash --noclean
 GOOS=windows GOARCH=386 ./make.bash --noclean
 ```
 
-2. Enable all desired platforms/architectures in build.sh
-    For example, if you only want to build the binaries for linux, comment the build_binary calls for OSX (darwin) and Windows:
-    ```
+##### 2. Enable all desired platforms/architectures in build.sh
+
+If you only want to, for example, build the binaries for linux, comment the build_binary calls for OSX (darwin) and Windows:
+
+```
 # build_binary darwin amd64 darwin_x86_64 urlreceiver
 # build_binary darwin 386 darwin_x86 urlreceiver
 build_binary linux amd64 linux_x86_64 urlreceiver
@@ -42,9 +45,12 @@ build_binary linux 386 linux_x86 urlreceiver
 # build_binary windows amd64 windows_x86_64 urlreceiver.exe
 # build_binary windows 386 windows_x86 urlreceiver.exe
 ```
-3. Run build.sh
-    ```
+
+##### 3. Run build.sh
+
+```
 sh build.sh
 ```
-    The package will be created in the `dist` folder in the project directory.
+
+The package will be created in the `dist` folder in the project directory.
 
