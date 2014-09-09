@@ -54,3 +54,7 @@ sh build.sh
 
 The package will be created in the `dist` folder in the project directory.
 
+## License
+
+This add-on is licensed unter the terms of [Creative Commons 3.0 (CC BY 3.0)](http://creativecommons.org/licenses/by/3.0/)
+
