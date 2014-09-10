@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoint name="data/inputs/urlreceiver">
+  <header>URL Receiver</header>
+  <breadcrumb>
+    <parent hidecurrent="False">datainputstats</parent>
+    <name>URL Receiver</name>
+  </breadcrumb>
+  <elements>
+    <element name="sourceFields" type="fieldset">
+      <view name="list"/>
+      <view name="edit"/>
+      <view name="create"/>
+      <elements>
+        <element label="Name of URL receiver input" name="name">
+          <view name="list"/>
+          <view name="create"/>
+          <key name="exampleText">Unique name for this input</key>
+        </element>
+        <element label="TCP Port" name="port" type="textfield">
+          <view name="edit"/>
+          <view name="create"/>
+          <view name="list"/>
+          <key name="exampleText">Port to listen on for incoming HTTP requests</key>
+        </element>
+        <element label="URL Path" name="path" type="textfield">
+          <view name="edit"/>
+          <view name="create"/>
+          <view name="list"/>
+          <key name="exampleText">URL Path to match against requests</key>
+        </element>
+        <element label="Data Retrieval" name="data_retrieval" type="select">
+          <view name="edit"/>
+          <view name="create"/>
+          <view name="list"/>
+          <options>
+            <opt value="raw_body" label="raw_body (Read raw body)" />
+            <opt value="form_field" label="form_field (Read specific form field)" />
+            <opt value="form_kv" label="form_kv (Read all form fields in KV format)" />
+            <opt value="full_request" label="full_request (Dump request details)" />
+          </options>
+          <onChange>
+            <key name="_action">showonly</key>
+            <group_set>
+              <group name="form_field" />
+              <group name="raw_body" />
+              <group name="full_request" />
+              <group name="form_kv" />
+            </group_set>
+            <key name="form_field">form_field</key>
+            <key name="raw_body">raw_body</key>
+            <key name="full_request">full_request</key>
+            <key name="form_kv">form_kv</key>
+          </onChange>
+          <key name="exampleText">Define how data is extracted from the incoming HTTP request</key>
+        </element>
+        <element name="raw_body" type="fieldset" />
+        <element name="form_kv" type="fieldset" />
+        <element name="full_request" type="fieldset" />
+        <element name="form_field" type="fieldset">
+          <view name="edit" />
+          <view name="create" />
+          <elements>
+            <element label="Form field" name="form_field" type="textfield">
+              <view name="edit"/>
+              <view name="create"/>
+              <key name="exampleText">Specify the form field to index</key>
+            </element>
+          </elements>
+        </element>
+        <element label="Use Client-IP address as host field value" name="host_from_clientip" type="checkbox">
+          <view name="edit"/>
+          <view name="create"/>
+        </element>
+        <element label="Debug" name="debug" type="checkbox">
+          <view name="edit"/>
+          <view name="create"/>
+          <key name="exampleText">Log debugging information to splunkd.log for this input</key>
+        </element>
+      </elements>
+    </element>
+    <element name="sourcetypeFields" type="fieldset">
+      <view name="list"/>
+      <view name="edit"/>
+      <view name="create"/>
+      <elements>
+        <element label="Set sourcetype" name="spl-ctrl_sourcetypeSelect" type="select">
+          <onChange>
+            <!-- <key name="auto">NONE</key>-->
+            <key name="_action">showonly</key>
+            <group_set>
+              <group name="sourcetype"/>
+              <group name="spl-ctrl_from_list"/>
+            </group_set>
+            <key name="sourcetype">sourcetype</key>
+            <key name="spl-ctrl_from_list">spl-ctrl_from_list</key>
+          </onChange>
+          <options>
+            <!-- <opt value="auto" label="Automatic"/>-->
+            <opt label="From list" value="spl-ctrl_from_list"/>
+            <opt label="Manual" value="sourcetype"/>
+          </options>
+          <view name="edit"/>
+          <view name="create"/>
+          <!-- <key name="exampleText">Set to automatic and Splunk will classify and assign sourcetype automatically. Unknown sourcetypes will be given a placeholder name.</key>-->
+          <key name="processValueEdit">[[ e for e in ['sourcetype'] if form_defaults.get(e) ][0]]</key>
+          <key name="processValueAdd">[[ e for e in ['sourcetype'] if form_defaults.get(e) ][0]]</key>
+        </element>
+        <element label="Source type" name="sourcetype" type="textfield">
+          <view name="list"/>
+          <view name="edit"/>
+          <view name="create"/>
+          <key name="exampleText">If this field is left blank, the default value of script will be used for the source type.</key>
+          <key name="processValueList">_('script') if (value==None or value=='') else value</key>
+          <key name="submitValueAdd">form_data.get('spl-ctrl_from_list') if form_data.get('spl-ctrl_sourcetypeSelect')=='spl-ctrl_from_list' else value if form_data.get('spl-ctrl_sourcetypeSelect')=='sourcetype' else None</key>
+          <key name="submitValueEdit">form_data.get('spl-ctrl_from_list') if form_data.get('spl-ctrl_sourcetypeSelect')=='spl-ctrl_from_list' else value if form_data.get('spl-ctrl_sourcetypeSelect')=='sourcetype' else None</key>
+          <key name="labelList">Source type</key>
+        </element>
+        <element label="Select source type from list" name="spl-ctrl_from_list" type="select">
+          <view name="edit"/>
+          <view name="create"/>
+          <key name="exampleText">Splunk classifies all common data types automatically, but if you're looking for something specific, you can find more source types in the <![CDATA[            <a href="../../../apps/remote">Splunkbase apps browser</a>            ]]>or online at <![CDATA[            <a href="http://www.splunkbase.com/" target="_blank">www.splunkbase.com</a>            ]]>.</key>
+          <key name="requiredIfVisible"/>
+          <key name="dynamicOptions" type="dict">
+            <key name="keyName">title</key>
+            <key name="keyValue">title</key>
+            <key name="splunkSource">/saved/sourcetypes</key>
+            <key name="splunkSourceParams" type="dict">
+              <key name="count">-1</key>
+              <key name="search">'pulldown_type=true'</key>
+            </key>
+            <key name="prefixOptions" type="list">
+              <item type="list">
+                <item/>
+                <item>Choose...</item>
+              </item>
+            </key>
+          </key>
+        </element>
+      </elements>
+      <key name="legend">Source type</key>
+      <key name="helpText">Set sourcetype field for all events from this source.</key>
+    </element>
+    <element class="spl-mgr-advanced-switch" label="More settings" name="spl-ctrl_EnableAdvanced" type="checkbox">
+      <view name="edit"/>
+      <view name="create"/>
+      <onChange>
+        <key name="_action">showonly</key>
+        <key name="0">NONE</key>
+        <key name="1">ALL</key>
+        <group_set>
+          <group name="advanced"/>
+        </group_set>
+      </onChange>
+    </element>
+    <element class="spl-mgr-advanced-options" name="advanced" type="fieldset">
+      <view name="edit"/>
+      <view name="create"/>
+      <elements>
+        <element name="hostFields" type="fieldset">
+          <key name="legend">Host</key>
+          <view name="list"/>
+          <view name="edit"/>
+          <view name="create"/>
+          <elements>
+            <element label="Host field value" name="host" type="textfield">
+              <view name="edit"/>
+              <view name="create"/>
+            </element>
+          </elements>
+        </element>
+        <element name="indexField" type="fieldset">
+          <key name="legend">Index</key>
+          <key name="helpText">Set the destination index for this source.</key>
+          <view name="list"/>
+          <view name="edit"/>
+          <view name="create"/>
+          <elements>
+            <element label="Index" name="index" type="select">
+              <view name="list"/>
+              <view name="edit"/>
+              <view name="create"/>
+              <key name="dynamicOptions" type="dict">
+                <key name="keyName">title</key>
+                <key name="keyValue">title</key>
+                <key name="splunkSource">/data/indexes</key>
+                <key name="splunkSourceParams" type="dict">
+                  <key name="search">'isInternal=false disabled=false'</key>
+                  <key name="count">-1</key>
+                </key>
+              </key>
+            </element>
+          </elements>
+        </element>
+      </elements>
+    </element>
+    <element label="App" name="eai:acl.app">
+      <view name="list"/>
+      <key name="processValueList">entity['eai:acl']['app'] or &quot;&quot;</key>
+    </element>
+  </elements>
+</endpoint>
