@@ -54,7 +54,6 @@ func confiureInputHandler(stanza InputStanza, stream Stream, servers map[int]htt
 			if value != "" {
 
 				event.Data = value
-				stream.Send(event)
 			} else {
 				Warn("Received empty form field=%s", readFormField)
 				http.Error(w, fmt.Sprintf("Missing form field %s", readFormField), 400)
