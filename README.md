@@ -1,6 +1,6 @@
 # URL Receiver Modular Input
 
-Simple modular input written in Go which starts a webserver and listens for incomming requests. Data received in the request body or form params is the indexed by Splunk. This can be used to receive data from Webhooks.
+Simple modular input written in Go which starts a webserver and listens for incomming requests. Data received in the request body or form params is the indexed by Splunk. This can be used to receive data from [Webhooks](http://webhooks.org).
 
 ## Dependencies
 
