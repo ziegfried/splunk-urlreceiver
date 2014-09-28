@@ -28,7 +28,7 @@
           <view name="list"/>
           <key name="exampleText">URL Path to match against requests</key>
         </element>
-        <element label="Data Retrieval" name="data_retrieval" type="select">
+        <element label="Data Format" name="data_retrieval" type="select">
           <view name="edit"/>
           <view name="create"/>
           <view name="list"/>

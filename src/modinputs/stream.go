@@ -22,12 +22,12 @@ type Stream struct {
 	stopped chan bool
 }
 
-func NewStream(bufferSize int) Stream {
+func NewStream(bufferSize int) *Stream {
 	stream := new(Stream)
 	stream.buffer = make(chan Event, bufferSize)
 	stream.done = make(chan bool)
 	stream.stopped = make(chan bool)
-	return *stream
+	return stream
 }
 
 func (stream Stream) Start() {
@@ -54,7 +54,7 @@ func (stream Stream) streamEvents() {
 			break
 		case event := <-stream.buffer:
 			if err := enc.Encode(event); err != nil {
-				Error("Error sending event: %s", err)
+				Log.Error("Error sending event: %s", err)
 			}
 			os.Stdout.Write([]byte("\n"))
 		}
